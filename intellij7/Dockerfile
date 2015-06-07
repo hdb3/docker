@@ -1,9 +1,9 @@
-FROM java7
+FROM hdb3/java7
 MAINTAINER Nic Hart <nic@hdb3.net>
 #CMD idea.sh
 CMD ["/bin/bash","-l"]
 WORKDIR /root
-ADD https://download.jetbrains.com/idea/ideaIU-14.1.3.tar.gz .
+ADD https://download.jetbrains.com/idea/ideaIU-14.1.3.tar.gz ./
 # ADD ideaIU-14.1.3.tar.gz ./
 RUN apt-get update && apt-get dist-upgrade -y
 RUN apt-get install xorg xterm -y --no-install-recommends
