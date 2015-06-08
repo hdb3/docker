@@ -1,4 +1,4 @@
-FROM intellij7
+FROM hdb3/intellij7
 MAINTAINER Nic Hart <nic@hdb3.net>
 CMD ["/bin/bash","-l"]
 WORKDIR /root
