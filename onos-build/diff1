@@ -1,0 +1,21 @@
+diff --git a/providers/netconf/device/src/test/java/org/onosproject/provider/netconf/device/impl/NetconfDeviceProviderTest.java b/providers/netconf/device/src/test/java/org/onosproject/provider/netconf/device/impl/NetconfDeviceProviderTest.java
+index 6bb8082..de2ef38 100644
+--- a/providers/netconf/device/src/test/java/org/onosproject/provider/netconf/device/impl/NetconfDeviceProviderTest.java
++++ b/providers/netconf/device/src/test/java/org/onosproject/provider/netconf/device/impl/NetconfDeviceProviderTest.java
+@@ -23,6 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
+ 
+ import java.io.IOException;
+ import java.net.SocketTimeoutException;
++import java.net.ConnectException;
+ import java.net.URI;
+ import java.net.URISyntaxException;
+ import java.util.Collection;
+@@ -179,7 +180,7 @@ public class NetconfDeviceProviderTest {
+         return dictionary;
+     }
+ 
+-    @Test(expected = SocketTimeoutException.class)
++    @Test(expected = ConnectException.class)
+     public void testSSHAuthentication() throws JNCException, IOException {
+         NetconfDevice netconfDevice = new NetconfDevice("10.18.14.19", 22,
+                                                         "cisco", "cisco");
