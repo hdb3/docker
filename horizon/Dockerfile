@@ -1,6 +1,5 @@
-FROM ubuntu:14.04
+FROM hdb3/openstack-base
 MAINTAINER Nic Hart <nic@hdb3.net>
 CMD ["/bin/bash","-l"]
 WORKDIR /root
-RUN cd ; apt-get install git python-dev python-virtualenv libssl-dev libffi-dev ; \
-    git clone https://github.com/openstack/horizon.git && cd horizon
+RUN cd && git clone https://github.com/openstack/horizon.git && cd horizon
