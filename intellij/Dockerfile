@@ -2,8 +2,9 @@ FROM java8
 MAINTAINER Nic Hart <nic@hdb3.net>
 #CMD idea.sh
 CMD ["/bin/bash","-l"]
+ENV DISPLAY :0
 WORKDIR /root
-ADD https://download.jetbrains.com/idea/ideaIU-14.1.3.tar.gz .
+ADD https://download.jetbrains.com/idea/ideaIU-14.1.3.tar.gz /root/
 #ADD ideaIU-14.1.3.tar.gz ./
 RUN apt-get update && apt-get dist-upgrade -y
 RUN apt-get install xorg xterm -y --no-install-recommends
