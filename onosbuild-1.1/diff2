@@ -1,0 +1,77 @@
+--- a/openflow/drivers/src/main/java/org/onosproject/openflow/drivers/DriverManager.java
++++ b/openflow/drivers/src/main/java/org/onosproject/openflow/drivers/DriverManager.java
+@@ -93,6 +93,11 @@ public final class DriverManager implements OpenFlowSwitchDriverFactory {
+             return new OFCorsaSwitchDriver(dpid, desc);
+         }
+ 
++        if (vendor.startsWith("HP")) {
++            log.warn("HP switch with DPID:{} found..", dpid);
++            return new OFSwitchImplOVS13(dpid, desc);
++        }
++
+         log.warn("DriverManager could not identify switch desc: {}. "
+                          + "Assigning AbstractOpenFlowSwich", desc);
+         return new AbstractOpenFlowSwitch(dpid, desc) {
+--- a/openflow/drivers/src/main/java/org/onosproject/openflow/drivers/OFSwitchImplOVS13.java
++++ b/openflow/drivers/src/main/java/org/onosproject/openflow/drivers/OFSwitchImplOVS13.java
+@@ -25,6 +25,7 @@ import org.onosproject.openflow.controller.driver.AbstractOpenFlowSwitch;
+ import org.onosproject.openflow.controller.driver.SwitchDriverSubHandshakeAlreadyStarted;
+ import org.onosproject.openflow.controller.driver.SwitchDriverSubHandshakeCompleted;
+ import org.onosproject.openflow.controller.driver.SwitchDriverSubHandshakeNotStarted;
++// import org.onosproject.provider.of.flow.impl.FlowModBuilderVer13;
+ import org.projectfloodlight.openflow.protocol.OFBarrierRequest;
+ import org.projectfloodlight.openflow.protocol.OFDescStatsReply;
+ import org.projectfloodlight.openflow.protocol.OFFactory;
+@@ -50,6 +51,8 @@ public class OFSwitchImplOVS13 extends AbstractOpenFlowSwitch {
+ 
+     private static final short MIN_PRIORITY = 0x0;
+     private static final int OFPCML_NO_BUFFER = 0xffff;
++    // I wanted to import this from org.onosproject.provider.of.flow.impl.FlowModBuilderVer13 but I don't know how to.
++    public final int defaultTableId = 100;
+ 
+     public OFSwitchImplOVS13(Dpid dpid, OFDescStatsReply desc) {
+         super(dpid);
+@@ -59,7 +62,7 @@ public class OFSwitchImplOVS13 extends AbstractOpenFlowSwitch {
+ 
+     @Override
+     public String toString() {
+-        return "OFSwitchImplOVS13 [" + ((channel != null)
++        return "### Customised ### OFSwitchImplOVS13 [" + ((channel != null)
+                 ? channel.getRemoteAddress() : "?")
+                 + " DPID[" + ((getStringId() != null) ? getStringId() : "?") + "]]";
+     }
+--- a/providers/openflow/flow/src/main/java/org/onosproject/provider/of/flow/impl/FlowModBuilderVer13.java
++++ b/providers/openflow/flow/src/main/java/org/onosproject/provider/of/flow/impl/FlowModBuilderVer13.java
+@@ -80,6 +81,8 @@ public class FlowModBuilderVer13 extends FlowModBuilder {
+ 
+     private final TrafficTreatment treatment;
+ 
++    public final int defaultTableId = 100;
++
+     /**
+      * Constructor for a flow mod builder for OpenFlow 1.3.
+      *
+@@ -118,6 +121,7 @@ public class FlowModBuilderVer13 extends FlowModBuilder {
+ 
+         OFFlowAdd fm = factory().buildFlowAdd()
+                 .setXid(xid)
++                .setTableId(TableId.of(defaultTableId))
+                 .setCookie(U64.of(cookie))
+                 .setBufferId(OFBufferId.NO_BUFFER)
+                 .setInstructions(instructions)
+@@ -155,6 +159,7 @@ public class FlowModBuilderVer13 extends FlowModBuilder {
+ 
+         OFFlowMod fm = factory().buildFlowModify()
+                 .setXid(xid)
++                .setTableId(TableId.of(defaultTableId))
+                 .setCookie(U64.of(cookie))
+                 .setBufferId(OFBufferId.NO_BUFFER)
+                 .setInstructions(instructions)
+@@ -175,6 +180,7 @@ public class FlowModBuilderVer13 extends FlowModBuilder {
+ 
+         OFFlowDelete fm = factory().buildFlowDelete()
+                 .setXid(xid)
++                .setTableId(TableId.of(defaultTableId))
+                 .setCookie(U64.of(cookie))
+                 .setBufferId(OFBufferId.NO_BUFFER)
+                 .setMatch(match)
