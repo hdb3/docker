@@ -2,7 +2,8 @@ FROM ubuntu:14.04
 MAINTAINER Nic Hart <nic@hdb3.net>
 CMD ["/bin/bash","-l"]
 WORKDIR /root
-RUN apt-get update && apt-get -y install software-properties-common && \
+RUN cd && \
+    apt-get update && apt-get -y install software-properties-common && \
     add-apt-repository -y ppa:webupd8team/java && \
     apt-get update && apt-get dist-upgrade -y && \
     apt-get install -y git wget && \

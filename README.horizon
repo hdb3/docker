@@ -1,3 +1,6 @@
+THIS COMMAND EXPOSES BOTH apache and django ports, though apache is not fully functional due to some confusion about all of the 'static' assets.
+
+The django standalone server starts automnatically: the command could equally br run as a daemon (-d rtahter than -it).
 
 
 docker run -p 8000:8000 -p 8080:80 --add-host=controller:10.30.65.210 -it hdb3/horizon
