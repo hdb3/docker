@@ -1,0 +1,7 @@
+export ONOS_NIC=10.30.65.*
+export OC1="10.30.65.161"
+export OCN="10.30.65.161"
+export OCI="${OC1}"
+
+export ONOS_FEATURES=webconsole,onos-api,onos-core-trivial,onos-cli,onos-rest,onos-openflow,onos-app-fwd,onos-app-proxyarp,onos-app-gui
+#export ONOS_APPS="drivers,openflow,fwd,proxyarp,mobility"
