@@ -1,10 +1,3 @@
-apt-get install software-properties-common -y
-add-apt-repository ppa:webupd8team/java -y
-apt-get update
-apt-get install -y wget git python
-echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-apt-get install oracle-java8-installer oracle-java8-set-default -y
-apt-get clean ; apt-get autoclean ; apt-get autoremove
 cd ; mkdir Downloads Applications
 cd Downloads
 wget http://download.nextag.com/apache/karaf/3.0.2/apache-karaf-3.0.2.tar.gz

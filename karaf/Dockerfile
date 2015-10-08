@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM hdb3/java8
 MAINTAINER Nic Hart <nic@hdb3.net>
 CMD ["/bin/bash","-l"]
 WORKDIR /root
