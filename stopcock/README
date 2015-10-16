@@ -1,0 +1,3 @@
+stopcock uses the config.yml file to configure the destination controller.
+The sample config.yml file here tries to connect to a host called 'target'.
+You could inject a host entry into the container using the docker run option --add-host=

@@ -6,4 +6,5 @@ WORKDIR /root
 ADD stopcock.sh /root/
 RUN apt-get -y install git
 RUN git clone https://github.com/tignetworking/stopcock.git
+ADD config.yml /root/stopcock
 RUN . /etc/profile && cd stopcock && mvn install
