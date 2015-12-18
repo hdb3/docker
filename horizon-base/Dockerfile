@@ -14,6 +14,7 @@ RUN sed -i /etc/apt/sources.list -e 's/deb-src/# deb-src/g' && \
     cd && \
     git clone https://github.com/openstack/horizon.git && \
     cd horizon && \
-    git checkout origin/stable/juno && \
-    pip install oslo.i18n==1.7.0 # this is essential as oslo.i18n is fatal for the juno clients && \
-    pip install .
+    git checkout origin/stable/kilo
+    ## git checkout origin/stable/juno && \
+    ## pip install oslo.i18n==1.7.0 # this is essential as oslo.i18n is fatal for the juno clients && \
+    ## pip install .

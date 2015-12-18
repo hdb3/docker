@@ -1,4 +1,4 @@
-FROM hdb3/horizon-base
+FROM hdb3/horizon-base:kilo
 MAINTAINER Nic Hart <nic@hdb3.net>
 CMD ["/usr/bin/python","horizon/manage.py","runserver","0.0.0.0:8000"]
 #CMD ["/bin/bash","-l"]

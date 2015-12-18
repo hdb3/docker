@@ -1,9 +1,13 @@
 FROM hdb3/maven-ant
 MAINTAINER Nic Hart <nic@hdb3.net>
+# CMD ["/bin/bash","-l"]
 CMD ["/bin/bash","/root/run.sh"]
 WORKDIR /root
 ADD patch /root/
 ADD run.sh /root/
+#ADD ideaIU-14.1.5.tar.gz /root/
+#RUN apt-get update && apt-get -y install libcanberra-gtk-module libxtst6
+RUN apt-get update && apt-get -y install screen
 ADD https://github.com/floodlight/floodlight/archive/v1.1.zip /root/
 RUN . /etc/profile && \
     # needed to get docker's /bin/sh to pick up the PATH additions need for mvn to run.... && \
@@ -15,4 +19,7 @@ RUN . /etc/profile && \
     patch -p1 < /root/patch && \
     cd loxigen && make java && cd loxi_output/openflowj/ && mvn install && cp target/openflowj-0.9.1-SNAPSHOT*.jar /root/floodlight-1.1/lib && \
     cd /root/floodlight-1.1 && ant && \
-    apt-get -y purge unzip git make python && apt-get -y clean && apt-get -y autoclean && apt-get -y autoremove && rm -rf /root/.m2
+    apt-get -y purge unzip git make python && apt-get -y clean && apt-get -y autoclean && apt-get -y autoremove && rm -rf /root/.m2 && \
+    echo "finished"
+RUN rm /root/floodlight-1.1/src/main/resources/floodlightdefault.properties
+ADD floodlightdefault.properties /root/floodlight-1.1/src/main/resources/floodlightdefault.properties

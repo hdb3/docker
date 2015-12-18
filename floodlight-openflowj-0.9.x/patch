@@ -22,3 +22,14 @@
                      <execution>
                          <id>attach-javadocs</id>
 
+--- ./loxigen/java_gen/pre-written/src/main/java/org/projectfloodlight/openflow/types/TableId.java      
+@@ -17,7 +17,7 @@
+     public static final TableId NONE = new TableId(NONE_VAL);
+
+     public static final TableId ALL = new TableId(ALL_VAL);
+-    public static final TableId ZERO = NONE;
++    public static final TableId ZERO = of(100);
+
+     private final short id;
+
+
