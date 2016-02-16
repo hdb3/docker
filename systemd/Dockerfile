@@ -18,6 +18,6 @@ rm -f /lib/systemd/system/anaconda.target.wants/*;
 # RUN rm -f /lib/systemd/system/systemd-update-utmp-runlevel.service
 RUN cd /lib/systemd/system/ ; rm -fr etc-host* dracut-* rescue* initrd* systemd-ask-password* bluetooth.target proc-sys*
 RUN rm -rf /lib/systemd/system-generators/*
-RUN sed -i "/Port 22/ i Port 2222" /etc/ssh/sshd_config ; systemctl enable sshd
+RUN sed -i "/Port 22/ i Port 2222" /etc/ssh/sshd_config ; systemctl enable sshd ; ln -s /lib/systemd/system/systemd-user-sessions.service /lib/systemd/system/multi-user.target.wants
 # RUN crudini --set --verbose /etc/systemd/system.conf Manager LogLevel debug
 # RUN crudini --set --verbose /etc/systemd/system.conf Manager LogTarget journal
