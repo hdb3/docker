@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+for h in vceph1 vceph2 vceph3 ; do echo $h ; sshpass -pcentos ssh-copy-id $h ; done
+ceph-deploy new vceph1
+echo "osd pool default size = 2" >> ceph.conf
+ceph-deploy install vceph1 vceph2 vceph3
+ceph-deploy mon create-initial
+for h in vceph2 vceph3 ; do echo $h ; ssh -t $h "sudo -- sh -c ' umount /dev/vdb ; dd if=/dev/zero of=/dev/vdb count=2 '" ; done
+ceph-deploy osd prepare vceph2:/dev/vdb vceph3:/dev/vdb
+ceph-deploy osd activate vceph2:/dev/vdb1 vceph3:/dev/vdb1
+ceph-deploy admin vceph1
+ssh -t vceph1 "sudo -- sh -c 'chmod +r /etc/ceph/ceph.client.admin.keyring'"
