@@ -1,0 +1,10 @@
+
+Runing the basic learning bridge:
+
+start the image with the external port assignment:
+
+> docker run -it -p 6633:6633 --rm hdb3/ryu
+
+in the image run the learning bridge app:
+
+> ryu-manager ryu/ryu/app/simple_switch_13.py
