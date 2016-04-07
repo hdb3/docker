@@ -1,0 +1,25 @@
+#object storage
+rados mkpool data
+echo {Test-data} > testfile.txt
+rados put test-object-1 testfile.txt --pool=data
+ceph osd map data test-object-1
+rados rm test-object-1 --pool=data
+
+# block device
+rbd create foo --size 4096
+sudo rbd map foo --name client.admin
+sudo mkfs.ext4 -m0 /dev/rbd0
+sudo mkdir /mnt/ceph-block-device
+sudo mount /dev/rbd0 /mnt/ceph-block-device
+sudo hdparm -t /dev/rbd0
+
+# filesystem
+# on admin...
+ceph osd pool create cephfs_data 100
+ceph osd pool create cephfs_metadata 100
+ceph fs new fs1 cephfs_metadata cephfs_data
+scp ceph.client.admin.keyring vceph-client:admin.secret
+
+# on client...
+sudo mkdir /mnt/mycephfs
+sudo mount -v -t ceph 10.30.66.36:6789:/ /mnt/mycephfs -o name=admin,secretfile=admin.secret

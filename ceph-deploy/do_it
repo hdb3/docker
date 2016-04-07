@@ -1,21 +1,30 @@
 #!/bin/bash
+MASTER="ceph1"
+TARGETS="ceph1 ceph2 ceph3"
 set -e
-for h in vceph1 vceph2 vceph3 vceph-client ; do echo $h ; sshpass -pcentos ssh-copy-id $h ; done
-ceph-deploy new vceph1
+for h in $TARGETS 
+ do echo $h 
+ sshpass -pcentos ssh-copy-id -o ControlPath=none $h 
+ done
+ceph-deploy new $MASTER
+ceph-deploy install $MASTER
 echo "osd pool default size = 2" >> ceph.conf
-ceph-deploy install vceph1 vceph2 vceph3 vceph-client
 ceph-deploy mon create-initial
-ceph-deploy mon add vceph2
-ceph-deploy mon add vceph3
-for h in vceph1 vceph2 vceph3 ; do echo $h ; ssh -t $h "sudo -- sh -c ' umount /dev/vdb ; dd if=/dev/zero of=/dev/vdb count=2 '" ; done
-ceph-deploy osd prepare vceph1:/dev/vdb vceph2:/dev/vdb vceph3:/dev/vdb
-ceph-deploy osd activate vceph1:/dev/vdb1 vceph2:/dev/vdb1 vceph3:/dev/vdb1
-ceph-deploy admin vceph1
-ceph-deploy admin vceph-client
-ssh -t vceph1 "sudo -- sh -c 'chmod +r /etc/ceph/ceph.client.admin.keyring'"
-ssh -t vceph-client "sudo -- sh -c 'chmod +r /etc/ceph/ceph.client.admin.keyring'"
-ceph-deploy mds create vceph1
-ceph-deploy rgw create vceph1
-ssh -t vceph1 "sudo -- sh -c 'ceph osd pool create cephfs_data 128 ;\
-                              ceph osd pool create cephfs_metadata 128 ; \
-                              ceph fs new cephfs cephfs_metadata cephfs_data'"
+for h in $TARGETS
+ do
+  echo $h 
+  ceph-deploy install $h
+  #ssh -t $h "sudo -- sh -c ' umount /dev/vdb 
+  #dd if=/dev/zero of=/dev/vdb count=2 '" 
+  scp root@${h}:ceph-disks .
+  for disk in $(cat ceph-disks) ;
+  do
+    ceph-deploy osd prepare ${h}:${disk}
+    ceph-deploy osd activate ${h}:${disk}1
+  done
+ done
+ceph-deploy admin $MASTER
+ssh -t $MASTER "sudo -- sh -c 'chmod +r /etc/ceph/ceph.client.admin.keyring'"
+ssh $MASTER ceph health
+ceph-deploy mds create $MASTER
+ceph-deploy rgw create $MASTER
