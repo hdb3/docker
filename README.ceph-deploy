@@ -1,0 +1,7 @@
+This Docker image is intended to simplify the installation of a ceph cluster, which process requires
+an administrative node only during the installation process.  Within the image are two scripts - one builds
+a complete ceph cluster, the other builds and tests a ceph client.
+In it's current form this Docker image is only the final stage of build, requiring first the preparation phase
+executed by the complementary remote executiion script 'remote/ceph-nodes'.
+These two systems should be merged - there is no overriding reason to maintain them separately.
+Also, the configuration specifics should be isolated in a seprate file rather than included in the scrip itself.

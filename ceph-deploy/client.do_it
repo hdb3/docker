@@ -1,0 +1,16 @@
+#/bin/bash -ve
+# test the RBD driver (see http://docs.ceph.com/docs/master/rbd/rados-rbd-cmds/)
+sudo rbd create foo --size 4096 
+sudo rbd map foo --name client.admin
+sudo mkfs.ext4 -m0 /dev/rbd0
+
+#test object store
+ceph osd pool create data 128 128
+dd if=/dev/urandom of=testfile count=1
+rados put object1 testfile --pool=data
+rados get object1 newtestfile --pool=data
+md5sum testfile newtestfile
+
+# test the file system (requires that MDS has been installed and the ceph new fs has been built)
+sudo mkdir /mnt/cephfs
+sudo mount -t ceph vceph1:/ /mnt/cephfs -o name=admin,secret=$(ceph-authtool -p /etc/ceph/ceph.client.admin.keyring)
