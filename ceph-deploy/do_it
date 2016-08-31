@@ -1,6 +1,6 @@
 #!/bin/bash
-MASTER="ceph1"
-TARGETS="ceph1 ceph2 ceph3"
+MASTER="vm1"
+TARGETS="vm1 vm2 vm3 vm4"
 set -e
 for h in $TARGETS 
  do echo $h 

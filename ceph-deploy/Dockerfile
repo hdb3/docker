@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:latest
 MAINTAINER Nic Hart <nic@hdb3.net>
 WORKDIR /root
 COPY ceph.repo /etc/yum.repos.d/
@@ -10,4 +10,4 @@ RUN useradd -d /home/centos -m centos && \
 USER centos
 RUN ssh-keygen -t rsa -f ~/.ssh/id_rsa && echo "StrictHostKeyChecking no" >> ~/.ssh/config && chmod og-rwx ~/.ssh/config
 WORKDIR /home/centos
-COPY do_it .
+COPY do_it ceph-deploy.sh ceph-test.sh selective-format.sh ./
