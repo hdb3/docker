@@ -1,6 +1,6 @@
 for vm in $TARGETS $CLIENT ; do sshpass -p centos ssh-copy-id $vm ; done
 ceph-deploy new $MASTER
-ceph-deploy install vm1 vm2 vm3 vm4
+ceph-deploy install $TARGETS
 ceph-deploy mon create-initial
 for h in $TARGETS
   do
