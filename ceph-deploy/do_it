@@ -1,30 +1,12 @@
 #!/bin/bash
-MASTER="vm1"
-TARGETS="vm1 vm2 vm3 vm4"
+export MASTER="vm1"
+export CLIENT="ceph-client"
+export TARGETS="vm1 vm2 vm3 vm4"
+export DISKS="vdb vdc vdd"
+#export MASTER="ceph01"
+#export TARGETS="ceph01 ceph02 ceph03"
+#export DISKS="vdb"
 set -e
-for h in $TARGETS 
- do echo $h 
- sshpass -pcentos ssh-copy-id -o ControlPath=none $h 
- done
-ceph-deploy new $MASTER
-ceph-deploy install $MASTER
-echo "osd pool default size = 2" >> ceph.conf
-ceph-deploy mon create-initial
-for h in $TARGETS
- do
-  echo $h 
-  ceph-deploy install $h
-  #ssh -t $h "sudo -- sh -c ' umount /dev/vdb 
-  #dd if=/dev/zero of=/dev/vdb count=2 '" 
-  scp root@${h}:ceph-disks .
-  for disk in $(cat ceph-disks) ;
-  do
-    ceph-deploy osd prepare ${h}:${disk}
-    ceph-deploy osd activate ${h}:${disk}1
-  done
- done
-ceph-deploy admin $MASTER
-ssh -t $MASTER "sudo -- sh -c 'chmod +r /etc/ceph/ceph.client.admin.keyring'"
-ssh $MASTER ceph health
-ceph-deploy mds create $MASTER
-ceph-deploy rgw create $MASTER
+set -a
+source ceph-deploy.sh
+ssh $CLIENT bash -ves < ceph-test.sh
