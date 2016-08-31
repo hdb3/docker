@@ -6,6 +6,7 @@ for h in $TARGETS
   do
     for d in $DISKS
       do
+        ssh -t $h sudo umount /dev/$d
         ceph-deploy osd prepare $h:/dev/$d
         ceph-deploy osd activate $h:/dev/${d}1
       done
