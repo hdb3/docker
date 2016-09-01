@@ -1,12 +1,12 @@
 #!/bin/bash
-#export MASTER="vm1"
-#export CLIENT="ceph-client"
-#export TARGETS="vm1 vm2 vm3 vm4"
-#export DISKS="vdb vdc vdd"
-export MASTER="ceph01"
-export TARGETS="ceph01 ceph02 ceph03"
-export CLIENT="ceph-deploy"
-export DISKS="vdb"
+export MASTER="vm1"
+export CLIENT="ceph-client"
+export TARGETS="vm1 vm2 vm3 vm4"
+export DISKS="vdb vdc vdd"
+#export MASTER="ceph01"
+#export TARGETS="ceph01 ceph02 ceph03"
+#export CLIENT="ceph-deploy"
+#export DISKS="vdb"
 set -e
 set -a
 source ceph-deploy.sh
