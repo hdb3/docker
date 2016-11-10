@@ -1,4 +1,4 @@
-FROM hdb3/wireshark
+FROM ubuntu
 MAINTAINER Nic Hart <nic@hdb3.net>
 CMD ["/bin/bash","-l"]
 WORKDIR /root
