@@ -1,4 +1,4 @@
-for vm in $TARGETS $CLIENT ; do sshpass -p centos ssh-copy-id $vm ; done
+for vm in $TARGETS $CLIENT ; do sshpass -p centos ssh-copy-id -i ~/.ssh/openstack_rsa.pub $vm ; done
 ceph-deploy new $MASTER
 ceph-deploy install $TARGETS
 ceph-deploy mon create-initial
